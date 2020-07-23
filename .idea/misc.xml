@@ -4,8 +4,10 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/Demo" />
     <file type="web" url="file://$PROJECT_DIR$/spring-security-demo" />
+    <file type="web" url="file://$PROJECT_DIR$/youlexuan-content-service" />
     <file type="web" url="file://$PROJECT_DIR$/youlexuan-dao" />
     <file type="web" url="file://$PROJECT_DIR$/youlexuan-manager-web" />
+    <file type="web" url="file://$PROJECT_DIR$/youlexuan-portal-web" />
     <file type="web" url="file://$PROJECT_DIR$/youlexuan-sellergoods-service" />
     <file type="web" url="file://$PROJECT_DIR$/youlexuan-shop-web" />
   </component>

@@ -1,5 +1,4 @@
- //控制层 
-app.controller('contentController' ,function($scope,$controller   ,contentService){	
+app.controller('contentController' ,function($scope,$controller   ,contentService,uploadService,contentCategoryService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -16,9 +15,9 @@ app.controller('contentController' ,function($scope,$controller   ,contentServic
 	$scope.findPage=function(page,rows){			
 		contentService.findPage(page,rows).success(
 			function(response){
-				$scope.list=response.rows;	
+				$scope.list=response.rows;
 				$scope.paginationConf.totalItems=response.total;//更新总记录数
-			}			
+			}
 		);
 	}
 	
@@ -71,10 +70,38 @@ app.controller('contentController' ,function($scope,$controller   ,contentServic
 	$scope.search=function(page,rows){			
 		contentService.search(page,rows,$scope.searchEntity).success(
 			function(response){
-				$scope.list=response.rows;	
+				$scope.list=response.rows;
 				$scope.paginationConf.totalItems=response.total;//更新总记录数
 			}			
 		);
 	}
-    
+
+	//上传
+	$scope.uploadFile=function () {
+		uploadService.uploadFile().success(
+			function (response) {
+				if (response.success) {
+					$scope.entity.pic=response.url;
+                    $scope.entity.message=response.message;
+				} else {
+					alert("上传失败")
+				}
+            }
+		).error(function () {
+			alert("上传出错")
+        })
+		
+    }
+
+    //查询所有的广告分类
+	$scope.findContentCategoryList=function () {
+		contentCategoryService.findAll().success(
+			function (response) {
+				$scope.contentCategoryList=response;
+            }
+		)
+    }
+
+    $scope.status=["无效","有效"]
+
 });	

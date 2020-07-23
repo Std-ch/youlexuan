@@ -11,7 +11,7 @@
 
 	<!-- 数据库连接池 -->
 	<!-- 加载配置文件 -->
-	<context:property-placeholder location="classpath*:properties/*.properties" />
+	<context:property-placeholder  location="classpath*:properties/*.properties" />
 	<!-- 数据库连接池 -->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
 		destroy-method="close">
@@ -32,5 +32,28 @@
 	</bean>
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.offcn.mapper" />
+	</bean>
+
+
+
+	<!-- 配置redis连接池相关属性-->
+	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxIdle" value="${redis.maxIdle}"/>
+		<property name="maxWaitMillis" value="${redis.maxWait}"/>
+	</bean>
+
+	<!-- 配置redis连接工厂-->
+	<bean id="RedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" >
+		<property name="hostName" value="${redis.host}"/>
+		<property name="port" value="${redis.port}"/>
+		<property name="password" value="${redis.pass}"/>
+		<property name="database" value="${redis.database}"/>
+		<!--连接池的属性 -->
+		<property name="poolConfig" ref="poolConfig"/>
+	</bean>
+
+	<!-- RedisTemplate-->
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+		<property name="connectionFactory" ref="RedisConnectionFactory"/>
 	</bean>
 </beans>

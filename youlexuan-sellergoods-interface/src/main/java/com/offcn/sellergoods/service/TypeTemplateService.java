@@ -14,6 +14,11 @@ import java.util.Map;
 public interface TypeTemplateService {
 
 	/**
+	 *返回指定模板id的规格列表
+	 */
+	public List<Map> findSpecList(Long id);
+
+	/**
 	 * 返回全部列表
 	 * @return
 	 */

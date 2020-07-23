@@ -1,11 +1,16 @@
 package com.offcn.sellergoods.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.offcn.entity.PageResult;
 import com.offcn.mapper.TbBrandMapper;
+import com.offcn.mapper.TbSpecificationOptionMapper;
 import com.offcn.mapper.TbTypeTemplateMapper;
+import com.offcn.pojo.TbSpecificationOption;
+import com.offcn.pojo.TbSpecificationOptionExample;
 import com.offcn.pojo.TbTypeTemplate;
 import com.offcn.pojo.TbTypeTemplateExample;
 import com.offcn.pojo.TbTypeTemplateExample.Criteria;
@@ -28,7 +33,35 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 
 	@Autowired
 	private TbBrandMapper brandMapper;
-	
+
+	@Autowired
+	private TbSpecificationOptionMapper specificationOptionMapper;
+
+
+	@Override
+	public List<Map> findSpecList(Long id) {
+		//根据id查询出typeTemplate对象
+		TbTypeTemplate typeTemplate = typeTemplateMapper.selectByPrimaryKey(id);
+		//获取typeTemplate对象中的spec_ids值，将其转换为List<map>集合
+		String specIds = typeTemplate.getSpecIds();
+		List<Map> list = JSON.parseArray(specIds,Map.class);
+		//遍历list集合，获取id值
+		if (list != null){
+			for (Map map : list) {
+				Long specid = new Long((Integer)map.get("id"));
+				//根据specid查询spec_option规格项表
+				TbSpecificationOptionExample example = new TbSpecificationOptionExample();
+				TbSpecificationOptionExample.Criteria criteria = example.createCriteria();
+				criteria.andSpecIdEqualTo(specid);
+				List<TbSpecificationOption> specificationOptions = specificationOptionMapper.selectByExample(example);
+				map.put("options",specificationOptions);
+			}
+
+		}
+
+		return list;
+	}
+
 	/**
 	 * 查询全部
 	 */

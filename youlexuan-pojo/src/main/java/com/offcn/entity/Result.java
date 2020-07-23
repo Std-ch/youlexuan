@@ -10,6 +10,22 @@ public class Result implements Serializable {
 
     private String message;
 
+    private String url;
+
+    public Result(boolean success, String message, String url) {
+        this.success = success;
+        this.message = message;
+        this.url = url;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public boolean isSuccess() {
         return success;
     }
@@ -29,5 +45,10 @@ public class Result implements Serializable {
     public Result(boolean success, String message) {
         this.success = success;
         this.message = message;
+    }
+
+    public Result(String url, boolean success) {
+        this.success = success;
+        this.url = url;
     }
 }
